@@ -179,9 +179,9 @@ public class PerformanceTests {
 
             for (Structure<Integer> struct : dataStructures){
                 System.out.println(struct.getName() + " information:");
-                System.out.println("Insertion Time: " + insertionTime(struct, insertData) + "µs");
-                System.out.println("Search Time: " + searchTime(struct, searchData) + "µs");
-                System.out.println("Deletion Time: " + deletionTime(struct, deleteData) + "µs\nMemory Usage: " + getMemUsage() / 1000000 + " MB\n<====================================>");               
+                System.out.println("Insertion Time: " + insertionTime(struct, insertData) + "ms");
+                System.out.println("Search Time: " + searchTime(struct, searchData) + "ms");
+                System.out.println("Deletion Time: " + deletionTime(struct, deleteData) + "ms\nMemory Usage: " + getMemUsage() / 1000000 + " MB\n<====================================>");               
             }
             System.out.println();
         }        
