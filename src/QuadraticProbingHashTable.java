@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuadraticProbingHashTable<K, V> {
     private static final int DEFAULT_CAPACITY = 16;
@@ -151,15 +149,4 @@ public class QuadraticProbingHashTable<K, V> {
         }
     }
 
-    public List<K> keys(){
-        List<K> keys = new ArrayList<>();
-        for (Entry<K, V> entry : table){
-            if (entry != null && !entry.deleted){
-                keys.add(entry.key);
-            }
-        }
-        return keys;
-    }
-
-    
 }

@@ -1,8 +1,4 @@
-
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
-
 
 public class ChainingHashTable<K, V> {
     private static final int DEFAULT_CAPACITY = 16;
@@ -117,18 +113,6 @@ public class ChainingHashTable<K, V> {
             }
         }
         return null;
-    }
-
-    public List<K> keys(){
-        List<K> keys = new ArrayList<>();
-        for (LinkedList<Entry<K, V>> bucket : table){
-            if (bucket != null){
-                for (Entry<K, V> entry : bucket){
-                    keys.add(entry.key);
-                }
-            }
-        }
-        return keys;
     }
 
 }

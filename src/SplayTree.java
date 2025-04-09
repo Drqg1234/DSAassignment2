@@ -1,6 +1,4 @@
 
-
-
 public class SplayTree<T extends Comparable<T>> {
     private class Node{
         T key;
