@@ -36,7 +36,15 @@ Section: `501`
 - Resizing `O(n)`: creates new table with either doubles or halved capacity | rehashes existing entries | mantains same key-to-value pair
 
 ### Quadratic Probing Hash Table
-- 
+- Entry class stores key value pairs with a deletion boolean check
+- Uses probing for open addressing
+- Load factor set to .5 (more conservative than chaining)
+- Entries are marked as deleted insread of being removed immediately
+- Insertion `O(1)`: hashes given key to find position | probes using quadratic sequence for 3 cases, empty slot (inserts new entry), duplicate key (updates value), tombstone or deleted boolean found (reuses slot) | resizes when the threshold is reached
+- Deletion `O(1)`: finds entry with probing | marks as deleted using the boolean (tombstone) instead of removing | downsizes table when utilization drops below 25%
+- Search `O(1)`: follows same probing sequence | skips deleted boolean (tombstone) | returns null if key is not found
+- Resizing `O(n)`: creates a new table, ignoring the tombstones | rehashes all active entries | maintains the same probing behavior in the newly created table
+
 
 ## Performance Results
 
