@@ -10,6 +10,34 @@ Section: `501`
 - **Operations**: Insert, Delete, Search
 - **Test Sizes**: 1_000, 10_000, 100_000
 
+## Implementation
+
+### AVL Tree
+- Basic node class with left and right children, with keys and height as data values
+- Balancing `O(logn)`: uses a balance factor to track height for each node (left - right)
+- Insertion `O(logn)`: recursively finds insertion points | updates heights and rebalances with 4 cases, double left, left right, double right, and right left
+- Deletion `O(logn)`: finds nodes in the same manner as a BST | handles 3 deletion cases, no children (simple deletion), one child (replace with that child), two children (replace with inorder successor) | rebalances after deletion is done
+- Search `O(logn)`: basic BST search algorithm
+
+### Splay Tree
+- Node class with left and right children, with keys and parent pointers as data
+- Insertion `O(logn)`: BST insertion | splays new node to the root using rotations | handles duplicates by splaying existing node
+- Deletion `O(logn)`: splays target to root node | 3 cases, no left child (replace with right tree), no right child (replace with left tree), two children (find max in left, splay to root, attach right tree)
+- Search `O(logn)`: BST search | found node, or last accessed in the case of not found, gets splayed to the top | uses the working set properly so that frequent accesses are faster
+
+### Chaining Hash Table
+- Stores the Key Value pairs in linked list buckets
+- Uses chaining to handle the hash collisions
+- Load factor set to .75 so the array resizes at 75% full
+- Doubles capacity when threshold is reached, halves when 25% full
+- Insertion `O(1)`: hashes key to find its bucket index | Key exists (updates value), or New key (adds to linked list) | triggers the resize function if the load factor is exceeded
+- Deletion `O(1)`: hashes to find bucket | removes entry from linked list if found | downsizes if table utilization goes below 25%
+- Search `O(1)`: hashes to find bucket | finds matching key in linked list | returns null if not found
+- Resizing `O(n)`: creates new table with either doubles or halved capacity | rehashes existing entries | mantains same key-to-value pair
+
+### Quadratic Probing Hash Table
+- 
+
 ## Performance Results
 
 The results shown are the averages of 10 runs
@@ -20,8 +48,8 @@ The results shown are the averages of 10 runs
 |-----------|-------|--------|----------|
 |AVL Tree | 1 | 3 | 32|
 |Splay Tree | 1 | 4 | 41|
-|Chaining Hash Table | 2 | 3 | 21|
-|Quadratic Probing Hash Table | 0 | 2 | 7|
+|Chaining Hash Table | 2 | 3 | 22|
+|Quadratic Probing Hash Table | 0 | 3 | 18|
 
 ### Deletion (ms)
 
@@ -30,7 +58,7 @@ The results shown are the averages of 10 runs
 |AVL Tree | 0 | 1 | 16|
 |Splay Tree | 1 | 2 | 28|
 |Chaining Hash Table | 1 | 1 | 8|
-|Quadratic Probing Hash Table | 1 | 1 | 3|
+|Quadratic Probing Hash Table | 1 | 2 | 6|
 
 ### Search (ms)
 
@@ -39,7 +67,7 @@ The results shown are the averages of 10 runs
 |AVL Tree | 1 | 1 | 1|
 |Splay Tree | 0 | 2 | 1|
 |Chaining Hash Table | 1 | 1 | 1|
-|Quadratic Probing Hash Table | 1 | 0 | 0|
+|Quadratic Probing Hash Table | 1 | 1 | 1|
 
 ### Memory Usage (MB)
 
@@ -47,14 +75,14 @@ The results shown are the averages of 10 runs
 |-----------|-------|--------|----------|
 |AVL Tree | 3 | 5 | 15|
 |Splay Tree | 3 | 5| 18|
-|Chaining Hash Table | 4 | 8 | 22|
-|Quadratic Probing Hash Table | 4 | 9 | 30|
+|Chaining Hash Table | 4 | 9 | 18|
+|Quadratic Probing Hash Table | 5 | 12 | 37|
 
 ## Observations
 
 ### Insertion
 
-- Overall, both Hash Tables outperform both the AVL Tree and Splay Tree with the Probing being the fastest at just 3ms of insertion time
+- Overall, both Hash Tables outperform both the AVL Tree and Splay Tree with the Probing being the fastest at just 2ms of insertion time (10_000)
 - I would assume that due to the strict balancing rules of the AVL Tree, it outperforms the Splay Tree
 
 ### Deletion
@@ -64,12 +92,12 @@ The results shown are the averages of 10 runs
 
 ### Search
 
-- Nearly all structures have almost instant search times with Quadratic Probing being the fastest of them all
+- Nearly all structures have almost instant search times 
 
 ### Memory Usage
 
 - At all levels, the 2 trees use less memory than the hash tables since they do not reserve any more memory than they need to
-- Quadratic Probing uses slightly more memory than Chaining, around 8MB at the larger data sets
+- Quadratic Probing uses almost double the memory than chaining for the largest data set, 100_000
 
 ## Graphs
 

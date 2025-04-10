@@ -30,8 +30,17 @@ public class ChainingHashTable<K, V> {
         this.table = new LinkedList[capacity];
     }
 
-    private int hash(K key){
-        return (key.hashCode() & 0x7FFFFFFF) % capacity;
+    private int hash(K key) {
+        byte[] bytes = key.toString().getBytes();
+        final int FNV_OFFSET_BASIS = 0x811c9dc5;
+        final int FNV_PRIME = 0x01000193;
+        
+        int hash = FNV_OFFSET_BASIS;
+        for (byte b : bytes) {
+            hash ^= (b & 0xff);
+            hash *= FNV_PRIME;
+        }
+        return Math.abs(hash % capacity);
     }
 
     public int size(){

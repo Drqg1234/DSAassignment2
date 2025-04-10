@@ -92,8 +92,6 @@ public class AVLTree<T extends Comparable<T>> {
         return size;
     }
 
-
-
     public void insert(T key){
         root = insert(root, key);
         size++;
@@ -167,5 +165,4 @@ public class AVLTree<T extends Comparable<T>> {
 
         return (key.compareTo(node.key) < 0) ? search(node.left, key) : search(node.right, key);
     }
-
 }
