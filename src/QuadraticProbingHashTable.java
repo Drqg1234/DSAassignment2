@@ -1,3 +1,5 @@
+// A Quadratic Probing Hash Table implementation using a custom hashing method. Is more conservative than the Chaining HT
+// since it allows less allocation for data in the table
 
 public class QuadraticProbingHashTable<K, V> {
     private static final int DEFAULT_CAPACITY = 16;
@@ -31,6 +33,7 @@ public class QuadraticProbingHashTable<K, V> {
         this.table = new Entry[capacity];
     }
 
+    // Custom hashing method for generics
     private int hash(K key) {
         byte[] bytes = key.toString().getBytes();
         final int FNV_OFFSET_BASIS = 0x811c9dc5;
@@ -83,6 +86,7 @@ public class QuadraticProbingHashTable<K, V> {
         while (true) { 
             int current = probe(index, attempt);
 
+            // 3 cases: empty slot, duplicate key, or reusable slot
             if (table[current] == null){
                 if (firstDeleted != -1){
                     current = firstDeleted;
@@ -121,7 +125,7 @@ public class QuadraticProbingHashTable<K, V> {
                 return false;
             }
             else if (!table[current].deleted && table[current].key.equals(key)){
-                table[current].deleted = true;
+                table[current].deleted = true; // Marking as tombstone (deleted)
                 size--;
 
                 if (capacity > DEFAULT_CAPACITY && size <= threshold / 4){
@@ -157,5 +161,4 @@ public class QuadraticProbingHashTable<K, V> {
             }
         }
     }
-
 }

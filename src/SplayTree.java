@@ -1,3 +1,5 @@
+// A Splay Tree implementation. For every operation (insert, delete, search) the destination node is splayed to the root of the tree
+// This ensures frequently accessed nodes are easier to access
 
 public class SplayTree<T extends Comparable<T>> {
     private class Node{
@@ -103,6 +105,7 @@ public class SplayTree<T extends Comparable<T>> {
         Node cur = root;
         Node p = null;
 
+        // Basic BST insertion + splaying
         while (cur != null){
             p = cur;
             int compare = key.compareTo(cur.key);
@@ -134,6 +137,7 @@ public class SplayTree<T extends Comparable<T>> {
         size++;
     }
 
+    // Uses BST searching 
     private Node findNode(T key){
         Node cur = root;
         while (cur != null){
@@ -168,6 +172,7 @@ public class SplayTree<T extends Comparable<T>> {
 
         splay(node);
 
+        // If 1 child null
         if (node.left == null){
             root = node.right;
             if (root != null){
@@ -180,13 +185,13 @@ public class SplayTree<T extends Comparable<T>> {
                 root.parent = null;
             }
         }
-        else{
+        else{ // Both children are not null
             Node rightTree = node.right;
             Node leftTree = node.left;
             leftTree.parent = null;
 
             root = leftTree;
-            Node maxLeft = findMax(leftTree);
+            Node maxLeft = findMax(leftTree); // Inorder predecessor 
             splay(maxLeft);
 
             maxLeft.right = rightTree;

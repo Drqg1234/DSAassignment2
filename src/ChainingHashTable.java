@@ -1,3 +1,6 @@
+// A Chaining Hash Table implementation that uses a LinkedList with a threshold of 75% Table size doubles if above this threshold
+// or halves if less tha 25% full
+
 import java.util.LinkedList;
 
 public class ChainingHashTable<K, V> {
@@ -30,6 +33,7 @@ public class ChainingHashTable<K, V> {
         this.table = new LinkedList[capacity];
     }
 
+    // Custom hashing method for generics
     private int hash(K key) {
         byte[] bytes = key.toString().getBytes();
         final int FNV_OFFSET_BASIS = 0x811c9dc5;

@@ -1,3 +1,5 @@
+// A Generic AVL Tree implementation using a balance factor to account for 4 types of rotations: left, left right, right, and right left
+// The height is recursively calculated for each node
 
 public class AVLTree<T extends Comparable<T>> {
 
@@ -5,6 +7,7 @@ public class AVLTree<T extends Comparable<T>> {
         T key;
         int height;
         Node left, right;
+
         Node(T key){
             this.key = key;
             this.height = 1;
@@ -61,6 +64,7 @@ public class AVLTree<T extends Comparable<T>> {
         updateHeight(node);
         int balanceFactor = getBalanceFactor(node);
 
+        // Left is unbalanced
         if (balanceFactor > 1 && getBalanceFactor(node.left) >= 0){
             return rightRotate(node);
         }
@@ -69,6 +73,7 @@ public class AVLTree<T extends Comparable<T>> {
             return rightRotate(node);
         }
 
+        // Right is unbalanced
         if (balanceFactor < -1 && getBalanceFactor(node.right) <= 0){
             return leftRotate(node);
         }
@@ -137,7 +142,7 @@ public class AVLTree<T extends Comparable<T>> {
         }
         else { // Node found
             size--;
-            if (node.left == null || node.right == null){
+            if (node.left == null || node.right == null){ // Only 1 child
                 node = (node.left == null) ? node.right : node.left;
             }
             else{
