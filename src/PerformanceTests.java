@@ -1,3 +1,5 @@
+// Created a custom interface to cycle through the data structures to make testing easier and cleaner. Uses System.currentTimeMillis to count the 
+// time complexity and the getRuntime() method from Runtime to find memory usage.
 
 import java.util.ArrayList;
 import java.util.Random;
