@@ -54,59 +54,67 @@ The results shown are the averages of 10 runs
 
 | Structure | 1_000 | 10_000 | 100_000 |
 |-----------|-------|--------|----------|
-|AVL Tree | 1 | 3 | 32|
-|Splay Tree | 1 | 4 | 41|
-|Chaining Hash Table | 2 | 3 | 22|
-|Quadratic Probing Hash Table | 0 | 3 | 18|
+|AVL Tree | 1.6 | 1.9 | 21|
+|Splay Tree | 1.3 | 3.2 | 44.9|
+|Chaining Hash Table | 2.7 | 3.8 | 28.7|
+|Quadratic Probing Hash Table | 1 | 1.9 | 15.2|
 
 ### Deletion (ms)
 
 | Structure | 1_000 | 10_000 | 100_000 |
 |-----------|-------|--------|----------|
-|AVL Tree | 0 | 1 | 16|
-|Splay Tree | 1 | 2 | 28|
-|Chaining Hash Table | 1 | 1 | 8|
-|Quadratic Probing Hash Table | 1 | 2 | 6|
+|AVL Tree | .4 | 1.1 | 8.8|
+|Splay Tree | .2 | .9 | 9.9|
+|Chaining Hash Table | .5 | 2 | 9|
+|Quadratic Probing Hash Table | .1 | .6 | 9.7|
 
 ### Search (ms)
 
 | Structure | 1_000 | 10_000 | 100_000 |
 |-----------|-------|--------|----------|
-|AVL Tree | 1 | 1 | 1|
-|Splay Tree | 0 | 2 | 1|
-|Chaining Hash Table | 1 | 1 | 1|
-|Quadratic Probing Hash Table | 1 | 1 | 1|
+|AVL Tree | .9 | .7 | .4|
+|Splay Tree | .7 | .8 | 1|
+|Chaining Hash Table | 1.1 | .6 | 1.1|
+|Quadratic Probing Hash Table | 1.2 | .3 | .6|
 
 ### Memory Usage (MB)
 
 | Structure | 1_000 | 10_000 | 100_000 |
 |-----------|-------|--------|----------|
-|AVL Tree | 3 | 5 | 15|
-|Splay Tree | 3 | 5| 18|
-|Chaining Hash Table | 4 | 9 | 18|
-|Quadratic Probing Hash Table | 5 | 12 | 37|
+|AVL Tree | 0 | 1 | 5|
+|Splay Tree | 0 | 1| 9.5|
+|Chaining Hash Table | .1 | 2 | 18|
+|Quadratic Probing Hash Table | 0 | 3 | 23|
 
-## Observations
+### Insertion Performance
+- **Quadratic Probing HT** emerges as the clear winner for insertion operations, being:
+  - 70% faster than AVL Tree at 100,000 elements (15.2ms vs 21ms)
+  - 3× faster than Splay Tree at 100,000 elements (15.2ms vs 44.9ms)
+- **AVL Tree** shows remarkably consistent performance, only slightly slower than Quadratic Probing at medium sizes
+- **Splay Tree** demonstrates the highest variability, becoming significantly slower at scale
 
-### Insertion
+### Deletion Performance
+- **Quadratic Probing** maintains its lead in deletion operations:
+  - 3× faster than Chaining at 10,000 elements (0.6ms vs 2.0ms)
+  - Nearly identical to AVL Tree and Splay Tree at 100,000 elements (9.7ms vs 8.8ms vs 9.9ms)
+- **Splay Tree** shows excellent small-scale performance alongside QP
+- All structures converge to similar performance at 100,000 elements (8.8-9.9ms range)
 
-- Overall, both Hash Tables outperform both the AVL Tree and Splay Tree with the Probing being the fastest at just 2ms of insertion time (10_000)
-- I would assume that due to the strict balancing rules of the AVL Tree, it outperforms the Splay Tree
+### Search Performance
+- **All structures** show sub-millisecond performance at scale
+- **Quadratic Probing** delivers the most consistent results:
+  - 2× faster at 10,000 elements than Chaining (0.3ms vs 0.6ms)
+  - Maintains <1ms even at 100,000 elements
+- **AVL Tree** shows reverse scaling - faster at larger datasets (0.4ms at 100k)
 
-### Deletion
-
-- Quadratic Probing is by far the best at deletion, followed up by Chaining
-- Both trees are the slowest as they have to rebalance themselves for every single deletion
-
-### Search
-
-- Nearly all structures have almost instant search times 
-
-### Memory Usage
-
-- At all levels, the 2 trees use less memory than the hash tables since they do not reserve any more memory than they need to
-- Quadratic Probing uses almost double the memory than chaining for the largest data set, 100_000
+### Memory Efficiency
+- **AVL Tree** remains the most memory-efficient:
+  - 5× more efficient than Quadratic Probing at 100k (5MB vs 23MB)
+  - Half the memory of Splay Tree at largest scale (5MB vs 9.5MB)
+- **Hash Tables** show linear memory growth:
+  - Quadratic Probing uses 13% more memory than Chaining at 100k
+  - Both exceed tree structures by 2-4× at scale
 
 ## Graphs
 
-![alt text](image.png)
+![alt text](dsa2-graphs.png)

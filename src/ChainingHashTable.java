@@ -1,5 +1,5 @@
 // A Chaining Hash Table implementation that uses a LinkedList with a threshold of 75% Table size doubles if above this threshold
-// or halves if less tha 25% full
+// or halves if less than 25% full
 
 import java.util.LinkedList;
 
