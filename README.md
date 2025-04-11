@@ -117,4 +117,4 @@ The results shown are the averages of 10 runs
 
 ## Graphs
 
-![alt text](dsa2-graphs.png)
+![image](https://github.com/Drqg1234/DSAassignment2/blob/main/dsa2-graphs.PNG?raw=true)
