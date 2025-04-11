@@ -1,7 +1,7 @@
 // Created a custom interface to cycle through the data structures to make testing easier and cleaner. Uses System.currentTimeMillis to count the 
 // time complexity and the getRuntime() method from Runtime to find memory usage.
 
-import java.util.ArrayList;
+import java.lang.reflect.Array;
 import java.util.Random;
 
 public class PerformanceTests {
@@ -126,20 +126,22 @@ public class PerformanceTests {
         }
     }
 
-    public static ArrayList<Integer> generateRandomData(int size){
-        ArrayList<Integer> data = new ArrayList<>();
+    public static int[] generateRandomData(int size){
+        int[] data = new int[size];
         Random rand = new Random();
         for (int i = 0; i < size; i++){
-            data.add(rand.nextInt(size * 10));
+            data[i] = rand.nextInt(size * 10);
         }
         return data;
     }
 
     public static long getMemUsage(){
-        return Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        Runtime rt = Runtime.getRuntime();
+        rt.gc();
+        return rt.totalMemory() - rt.freeMemory();
     }
 
-    private static long insertionTime(Structure<Integer> struct, ArrayList<Integer> data){
+    private static long insertionTime(Structure<Integer> struct, int[] data){
         long start = System.currentTimeMillis();
         for (Integer key : data){
             struct.insert(key);
@@ -147,7 +149,7 @@ public class PerformanceTests {
         return System.currentTimeMillis() - start;
     }
 
-    private static long deletionTime(Structure<Integer> struct, ArrayList<Integer> data){
+    private static long deletionTime(Structure<Integer> struct, int[] data){
         long start = System.currentTimeMillis();
         for (Integer key : data){
             struct.delete(key);
@@ -155,7 +157,7 @@ public class PerformanceTests {
         return System.currentTimeMillis() - start;
     }
     
-    private static long searchTime(Structure<Integer> struct, ArrayList<Integer> data){
+    private static long searchTime(Structure<Integer> struct, int[] data){
         long start = System.currentTimeMillis();
         for (Integer key : data){
             struct.search(key);
@@ -167,15 +169,16 @@ public class PerformanceTests {
         int[] testSizes = {1_000, 10_000, 100_000};
         int search = 5_000;
         for (int curSize : testSizes){
-            ArrayList<Integer> insertData = generateRandomData(curSize);
-            ArrayList<Integer> searchData = generateRandomData(search);
-            ArrayList<Integer> deleteData = new ArrayList<>(insertData.subList(0, insertData.size() / 2));
+            int[] insertData = generateRandomData(curSize);
+            int[] searchData = generateRandomData(search);
+            int[] deleteData = generateRandomData(curSize / 2);
 
-            ArrayList<Structure<Integer>> dataStructures = new ArrayList<>();
-                dataStructures.add(new AVLTreeStructure());
-                dataStructures.add(new SplayTreeStructure());
-                dataStructures.add(new ChainingHashTableStructure());
-                dataStructures.add(new QuadraticProbingHashTableStructure());
+            @SuppressWarnings("unchecked")
+            Structure<Integer>[] dataStructures = (Structure<Integer>[]) Array.newInstance(Structure.class, 4);
+            dataStructures[0] = new AVLTreeStructure();
+            dataStructures[1] = new SplayTreeStructure();
+            dataStructures[2] = new ChainingHashTableStructure();
+            dataStructures[3] = new QuadraticProbingHashTableStructure();
 
             System.out.println("\t<Performance for " + curSize + ">\n<====================================>");
 
