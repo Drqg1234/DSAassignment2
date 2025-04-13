@@ -141,28 +141,61 @@ public class PerformanceTests {
         return rt.totalMemory() - rt.freeMemory();
     }
 
-    private static long insertionTime(Structure<Integer> struct, int[] data){
+    private static class PerformanceResult {
+        long time;
+        long memory;
+        
+        PerformanceResult(long time, long memory) {
+            this.time = time;
+            this.memory = memory;
+        }
+    }
+
+    private static PerformanceResult insertionPerformance(Structure<Integer> struct, int[] data){
+        // Record memory before operation
+        long memoryBefore = getMemUsage();
+        
         long start = System.currentTimeMillis();
         for (Integer key : data){
             struct.insert(key);
         }
-        return System.currentTimeMillis() - start;
+        long timeTaken = System.currentTimeMillis() - start;
+        
+        // Record memory after operation
+        long memoryAfter = getMemUsage();
+        long memoryUsed = memoryAfter - memoryBefore;
+        
+        return new PerformanceResult(timeTaken, memoryUsed);
     }
 
-    private static long deletionTime(Structure<Integer> struct, int[] data){
+    private static PerformanceResult deletionPerformance(Structure<Integer> struct, int[] data){
+        long memoryBefore = getMemUsage();
+        
         long start = System.currentTimeMillis();
         for (Integer key : data){
             struct.delete(key);
         }
-        return System.currentTimeMillis() - start;
+        long timeTaken = System.currentTimeMillis() - start;
+                
+        long memoryAfter = getMemUsage();
+        long memoryUsed = memoryAfter - memoryBefore;
+        
+        return new PerformanceResult(timeTaken, memoryUsed);
     }
     
-    private static long searchTime(Structure<Integer> struct, int[] data){
+    private static PerformanceResult searchPerformance(Structure<Integer> struct, int[] data){
+        long memoryBefore = getMemUsage();
+        
         long start = System.currentTimeMillis();
         for (Integer key : data){
             struct.search(key);
         }
-        return System.currentTimeMillis() - start;
+        long timeTaken = System.currentTimeMillis() - start;
+        
+        long memoryAfter = getMemUsage();
+        long memoryUsed = memoryAfter - memoryBefore;
+        
+        return new PerformanceResult(timeTaken, memoryUsed);
     }
 
     public static void main(String[] args) {
@@ -180,13 +213,24 @@ public class PerformanceTests {
             dataStructures[2] = new ChainingHashTableStructure();
             dataStructures[3] = new QuadraticProbingHashTableStructure();
 
-            System.out.println("\t<Performance for " + curSize + ">\n<====================================>");
+            System.out.println("Performance for " + curSize + "\n<====================================>");
 
             for (Structure<Integer> struct : dataStructures){
                 System.out.println(struct.getName() + " information:");
-                System.out.println("Insertion Time: " + insertionTime(struct, insertData) + "ms");
-                System.out.println("Deletion Time: " + deletionTime(struct, deleteData) + "ms");               
-                System.out.println("Search Time: " + searchTime(struct, searchData) + "ms\nMemory Usage: " + getMemUsage() / 1000000 + "MB\n<====================================>");
+                
+                PerformanceResult insertResult = insertionPerformance(struct, insertData);
+                PerformanceResult deleteResult = deletionPerformance(struct, deleteData);
+                PerformanceResult searchResult = searchPerformance(struct, searchData);
+                
+                System.out.println("--------------------\nInsertion Time: " + insertResult.time + "ms");                                
+                System.out.println("Deletion Time: " + deleteResult.time + "ms");
+                System.out.println("Search Time: " + searchResult.time + "ms");
+                
+                System.out.println("--------------------\nInsertion Memory: " + insertResult.memory / 1_000_000 + "MB");
+                System.out.println("Deletion Memory: " + deleteResult.memory / 1_000_000 + "MB");
+                System.out.println("Search Memory: " + searchResult.memory / 1_000_000 + "MB");
+
+                System.out.println("<====================================>");
             }
             System.out.println();
         }        

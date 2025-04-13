@@ -48,7 +48,7 @@ Section: `501`
 
 ## Performance Results
 
-The results shown are the averages of 10 runs
+**The results shown are the averages of 10 runs**
 
 ### Insertion (ms)
 
@@ -79,12 +79,13 @@ The results shown are the averages of 10 runs
 
 ### Memory Usage (MB)
 
-| Structure | 1_000 | 10_000 | 100_000 |
+*A quick note: given that I used MB and not KB, almost all the values, except Insertion for 100_000, were labelled as 0MB. It's not that there wasnt any memory being used, but it was not enough to be labelled as 1MB. Additionally, Java's memory management is already very efficient and Insertion is the only place that really takes a load on memory since its creating new objects while deletion and search are already heavily optimized within my code.*
+| Structure (I \|  D \| S) | 1_000 | 10_000 | 100_000 |
 |-----------|-------|--------|----------|
-|AVL Tree | 0 | 1 | 5|
-|Splay Tree | 0 | 1| 9.5|
-|Chaining Hash Table | .1 | 2 | 18|
-|Quadratic Probing Hash Table | 0 | 3 | 23|
+|AVL Tree | 0 \| 0 \| 0 | 0 \| 0 \| 0 | 4 \| 0 \| 0|
+|Splay Tree | 0 \| 0 \| 0 | 0 \| 0 \| 0| 4 \| 0 \| 0|
+|Chaining Hash Table | 0 \| 0 \| 0 | 0 \| 0 \| 0 | 8 \| 0 \| 0|
+|Quadratic Probing Hash Table | 0 \| 0 \| 0 | 0 \| 0 \| 0 | 4 \| 0 \| 0|
 
 ### Insertion Performance
 - **Quadratic Probing HT** emerges as the clear winner for insertion operations, being:
@@ -108,13 +109,9 @@ The results shown are the averages of 10 runs
 - **AVL Tree** shows reverse scaling - faster at larger datasets (0.4ms at 100k)
 
 ### Memory Efficiency
-- **AVL Tree** remains the most memory-efficient:
-  - 5× more efficient than Quadratic Probing at 100k (5MB vs 23MB)
-  - Half the memory of Splay Tree at largest scale (5MB vs 9.5MB)
-- **Hash Tables** show linear memory growth:
-  - Quadratic Probing uses 13% more memory than Chaining at 100k
-  - Both exceed tree structures by 2-4× at scale
+- **Nearly all operations** use 0MB of memory to complete their tasks
+- Out of those that do use memory, AVL, Splay, and QP all use around 4MB for insertion while Chaining uses 8MB *likely due to it using linked lists for storage*
 
 ## Graphs
 
-![alt text](dsa2-graphs.png)
+![alt text](dsa2-graphs.PNG)
